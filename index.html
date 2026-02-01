@@ -1,0 +1,115 @@
+<style>
+  #canvas {
+    height: 500px;
+    width: 500px;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid grey;
+    background-color: black;
+  }
+  body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: rgb(30,30,30);
+  }
+  #snake {
+    height: 50px;
+    width: 50px;
+    transition: 0.2s;
+    position: absolute;
+    border: 3px solid grey;
+    background-color: green;
+    box-sizing: border-box;
+  }
+  #food {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    transition: 0.2s;
+    border: 3px solid grey;
+    background-color: red;
+    box-sizing: border-box;
+  }
+  #scorecount {
+    font-size: 30px;
+    background-color: black;
+    color: white;
+    width: 250px;
+    margin-bottom: 20px;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    border: 3px solid darkgrey;
+  }
+  button{
+    padding: 10px 20px;
+    margin: 5px;
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+  }#up , #down{
+    margin-left: 30%;
+  }
+</style>
+<body>
+  <label id="scorecount">Score : 0</label>
+  <div id="canvas">
+    <div id="snake"></div>
+    <div id="food"></div>
+  </div>
+  <div class="controls">
+    <button id="up">UP</button><br>
+    <button id="left">LEFT</button>
+    <button id="right">RIGHT</button><br>
+    <button id="down">DOWN</button>
+  </div>
+
+  <script>
+    var snake = document.getElementById('snake');
+    var food = document.getElementById('food');
+    var label = document.getElementById('scorecount');
+    var snaketop = 0;
+    var snakeleft = 0;
+    var foodtop = 0;
+    var foodleft = 0;
+    var count = 0;
+
+    function placefood() {
+      foodtop = Math.floor(Math.random() * 10) * 50;
+      foodleft = Math.floor(Math.random() * 10) * 50;
+      food.style.top = foodtop + 'px';
+      food.style.left = foodleft + 'px';
+    }
+
+    function updateGame() {
+      if (snaketop < 0 || snaketop >= 600 || snakeleft < 0 || snakeleft >= 600) {
+        count = 0;
+        snaketop = 0;
+        snakeleft = 0;
+        label.textContent = 'Score : ' + count;
+      }
+      
+      snake.style.top = snaketop + 'px';
+      snake.style.left = snakeleft + 'px';
+
+      if (snaketop === foodtop && snakeleft === foodleft) {
+        count+=1;
+        label.textContent = 'Score : ' + count;
+        placefood();
+      }
+    }
+
+    document.getElementById('up').onclick = function() { snaketop -= 50; updateGame(); };
+    document.getElementById('down').onclick = function() { snaketop += 50; updateGame(); };
+    document.getElementById('left').onclick = function() { snakeleft -= 50; updateGame(); };
+    document.getElementById('right').onclick = function() { snakeleft += 50; updateGame(); };
+
+    placefood();
+    updateGame();
+  </script>
+</body>
